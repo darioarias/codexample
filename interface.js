@@ -1,24 +1,32 @@
-const { PriorityQueue } = require(`${__dirname}/priorityQueue`);
+const { Graph } = require(`${__dirname}/graph`);
 
-let q = new PriorityQueue();
+let g = new Graph();
 
-for (let i = 0; i < 10000; i += Math.floor(Math.random() * 5.531)) {
-  console.log("adding");
-  q.enqueue(`${i}`, i);
-}
+const getLetters = () => {
+  let leters = [];
+  for (let i = 97; i < 123; i++) {
+    leters.push(String.fromCharCode(i));
+  }
+  return leters;
+}; // generates the alphabet
 
-console.log(q.length);
+let alph = getLetters();
 
-while (q.peek()) {
-  console.log(`removed: ${q.dequeue()}`);
-}
+alph.forEach((letter) => {
+  g.insertVertex(letter);
+  g.insertVertex(letter.toLocaleUpperCase());
+}); // goes through every letter in the alpabet and adds it to the graph.
 
-// q.enqueue("10.1", 10);
-// q.enqueue("10.2", 10);
-// q.enqueue("10.3", 10);
-// q.enqueue("10.4", 10);
-// console.log(q.dequeue());
-// console.log(q.dequeue());
-// console.log(q.dequeue());
-// console.log(q.dequeue());
-// console.log(q.peek());
+for (let i = 0; i < alph.length * 3; i++) {
+  g.insertEdge(
+    `${alph[Math.floor(Math.random() * alph.length)]}`,
+    `${alph[Math.floor(Math.random() * alph.length)].toLocaleUpperCase()}`,
+    Math.floor(Math.random() * 50)
+  );
+} // Goes through the alpabet twice and adds a random edge on the graph.
+
+console.log(g.adjacencyList);
+console.log(g.shortestPath("a", "Z")); // will return the colost path from 'a' to 'Z' or "No such path"
+
+//Here I left a short snipet for anyone to test the code.
+//Note that the graph will be unique everytime since Math.random() is used to create edges and the weight between the edges
